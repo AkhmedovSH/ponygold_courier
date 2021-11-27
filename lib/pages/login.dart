@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ponygold_courier/globals.dart' as globals;
 import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -17,28 +18,24 @@ class _LoginState extends State<Login> {
   dynamic password = '';
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
+  var maskFormatter = new MaskTextInputFormatter(
+      mask: '+### ## ###-##-##', filter: {"#": RegExp(r'[0-9]')});
 
   void login(context) async {
-    final response = await http.post(
-      Uri.parse('https://ponygold.uz/api/auth/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-          <String, String>{'phone': '998' + phone, 'password': password}),
-    );
-    final responseJson = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      if (responseJson['user']['status'] == 8) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('access_token', responseJson['access_token']);
-        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-      } else {
-        globals.showToast(context, 'Вы не курьер');
-      }
-    }
-    if (response.statusCode == 400) {
-      globals.showToast(context, responseJson['error']);
+    setState(() {
+      phone = maskFormatter.getUnmaskedText();
+    });
+    final response = await globals.post('/api/auth/login',
+        <String, String>{'phone': phone, 'password': password}, true);
+    print(response['user']['role'] == '8');
+    if (response['user']['role'] == '8') {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('access_token', response['access_token']);
+      prefs.setString('user', jsonEncode(response['user']));
+      prefs.setString('password', password);
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    } else {
+      globals.showToast(context, 'Вы не курьер');
     }
   }
 
@@ -67,7 +64,8 @@ class _LoginState extends State<Login> {
                         margin: EdgeInsets.only(top: 20),
                         child: TextFormField(
                           inputFormatters: [
-                            LengthLimitingTextInputFormatter(9),
+                            // LengthLimitingTextInputFormatter(16),
+                            maskFormatter
                           ],
                           keyboardType: TextInputType.number,
                           validator: (value) {
@@ -81,13 +79,14 @@ class _LoginState extends State<Login> {
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.only(left: 10, bottom: 2),
-                              child: Text(
-                                "+998",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
+                            hintText: '+998 99 999-99-99',
+                            // prefixIcon: Padding(
+                            //   padding: EdgeInsets.only(left: 10, bottom: 2),
+                            //   child: Text(
+                            //     "+998",
+                            //     style: TextStyle(fontSize: 16),
+                            //   ),
+                            // ),
                             prefixIconConstraints:
                                 BoxConstraints(minWidth: 0, minHeight: 0),
                           ),
@@ -165,10 +164,7 @@ class _LoginState extends State<Login> {
                   Container(
                     margin: EdgeInsets.only(bottom: 15),
                     child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/register-step-1', (route) => false);
-                        },
+                        onPressed: () {},
                         child: Text(
                             'Обратитесь в службу поддержки: \n +998 99 314 43 63',
                             textAlign: TextAlign.center,
