@@ -27,6 +27,26 @@ class _ProfileState extends State<Profile> {
       "name": 'Доставленные, закрытые',
     }
   ];
+  List month = [
+    {
+      "id": 1,
+      "name": 'Сентябрь',
+    },
+    {
+      "id": 2,
+      "name": 'Доставленные, закрытые',
+    }
+  ];
+  List days = [
+    {
+      "id": 1,
+      "name": 'День',
+    },
+    {
+      "id": 2,
+      "name": 'Доставленные, закрытые',
+    }
+  ];
   String dropdownValue = 'Доставленные, незакрытые';
 
   @override
@@ -116,49 +136,247 @@ class _ProfileState extends State<Profile> {
                         ),
                       ]),
                     ),
-                    Center(
-                      child: Text(
-                        'Расчет с Pony Gold',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
                     Container(
-                      width: double.infinity,
-                      child: DropdownButton(
-                        // value: dropdownValue,
-                        hint: Text('${filter[0]['name']}'),
-                        icon: const Icon(Icons.chevron_right),
-                        iconSize: 24,
-                        iconEnabledColor: globals.blue,
-                        elevation: 16,
-                        style: const TextStyle(color: const Color(0xFF313131)),
-                        underline: Container(
-                          height: 2,
-                          color: globals.blue,
-                        ),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        items: filter.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: '${item['id']}',
-                            child: Text(item['name']),
-                          );
-                        }).toList(),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              'Расчет с Pony Gold',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 15),
+                            width: double.infinity,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 1.0,
+                                    style: BorderStyle.solid,
+                                    color: Color(0xFFECECEC)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0)),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: ButtonTheme(
+                                alignedDropdown: true,
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  // value: dropdownValue,
+                                  hint: Text('${filter[0]['name']}'),
+                                  icon: const Icon(Icons.chevron_right),
+                                  iconSize: 24,
+                                  iconEnabledColor: globals.blue,
+                                  elevation: 16,
+                                  style: const TextStyle(
+                                      color: const Color(0xFF313131)),
+                                  underline: Container(
+                                    height: 2,
+                                    color: globals.blue,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue!;
+                                    });
+                                  },
+                                  items: filter.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: '${item['id']}',
+                                      child: Text(item['name']),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  // height: 50,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          width: 1.0,
+                                          style: BorderStyle.solid,
+                                          color: Color(0xFFECECEC)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: ButtonTheme(
+                                      alignedDropdown: true,
+                                      child: DropdownButton(
+                                        isExpanded: true,
+                                        hint: Text('${month[0]['name']}'),
+                                        icon: const Icon(Icons.chevron_right),
+                                        iconSize: 24,
+                                        iconEnabledColor: globals.blue,
+                                        elevation: 16,
+                                        style: const TextStyle(
+                                            color: const Color(0xFF313131)),
+                                        underline: Container(
+                                          height: 2,
+                                          color: globals.blue,
+                                        ),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue!;
+                                          });
+                                        },
+                                        items: month.map((item) {
+                                          return DropdownMenuItem<String>(
+                                            value: '${item['id']}',
+                                            child: Text(item['name']),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    // height: 50,
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.0,
+                                            style: BorderStyle.solid,
+                                            color: Color(0xFFECECEC)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0)),
+                                      ),
+                                    ),
+                                    child: DropdownButtonHideUnderline(
+                                      child: ButtonTheme(
+                                        alignedDropdown: true,
+                                        child: DropdownButton(
+                                          isExpanded: true,
+                                          hint: Text('${days[0]['name']}'),
+                                          icon: const Icon(Icons.chevron_right),
+                                          iconSize: 24,
+                                          iconEnabledColor: globals.blue,
+                                          elevation: 16,
+                                          style: const TextStyle(
+                                              color: const Color(0xFF313131)),
+                                          underline: Container(
+                                            height: 2,
+                                            color: globals.blue,
+                                          ),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              dropdownValue = newValue!;
+                                            });
+                                          },
+                                          items: days.map((item) {
+                                            return DropdownMenuItem<String>(
+                                              value: '${item['id']}',
+                                              child: Text(item['name']),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 15),
+                                child: Text('Курьеру должны: ',
+                                    style: TextStyle(
+                                        color: globals.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 15),
+                                child: Text('9 000 000 сум',
+                                    style: TextStyle(
+                                        color: globals.green,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 15, bottom: 15),
+                                child: Text('Курьеру должны: ',
+                                    style: TextStyle(
+                                        color: globals.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 15, bottom: 15),
+                                child: Text('9 000 000 сум',
+                                    style: TextStyle(
+                                        color: globals.red,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                              )
+                            ],
+                          ),
+                          Container(
+                              height: 75,
+                              width: double.infinity,
+                              margin: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                  border: Border.all(color: Color(0xFFECECEC))),
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          'Заказ №78',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '02.05.2020',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFF747474)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned(
+                                      top: 10,
+                                      right: 8,
+                                      child: Container(
+                                          child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 18,
+                                        color: Color(0xFF5986E2),
+                                      ))),
+                                ],
+                              ))
+                        ],
                       ),
                     )
-                    // DropdownButton(
-                    //     // onChanged: (value) {
-
-                    //     // },
-                    //     items: [
-                    //       DropdownMenuItem(child: Text('data')),
-                    //       DropdownMenuItem(child: Text('data')),
-                    //       DropdownMenuItem(child: Text('data')),
-                    //     ])
                   ],
                 ),
               ),

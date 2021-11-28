@@ -19,7 +19,7 @@ Color black = Color(0xFF313131);
 Color blue = Color(0xFF5986E2);
 Color lightGrey = Color(0xFF313131);
 Color light = Color(0xFFECECEC);
-Color red = Color(0xFF5986E2);
+Color red = Color(0xFFEB6465);
 Color yellow = Color(0xFF313131);
 Color green = Color(0xFF39B499);
 Color grey = Color(0xFF747474);
@@ -115,8 +115,7 @@ post(url, payload, showToast) async {
   print(response.statusCode);
   print(response.body);
   if (response.statusCode == 400) {
-    showDangerToast('');
-    print(response.body);
+    showDangerToast(jsonDecode(response.body)['error']);
     return jsonDecode(response.body);
   }
   if (response.statusCode == 401) {
