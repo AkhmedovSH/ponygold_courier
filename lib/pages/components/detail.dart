@@ -90,7 +90,8 @@ class _DetailState extends State<Detail> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  globals.formatMoney(widget.totalAmount.toString()) + ' сум',
+                  globals.formatMoney(widget.item['total_amount'].toString()) +
+                      ' сум',
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

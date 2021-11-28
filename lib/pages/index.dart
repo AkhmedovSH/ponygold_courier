@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ponygold_courier/globals.dart' as globals;
+import 'package:ponygold_courier/widgets.dart';
 
 class Index extends StatefulWidget {
   Index({Key? key}) : super(key: key);
@@ -133,7 +134,7 @@ class _IndexState extends State<Index> {
                 color: globals.blue,
               ),
             ),
-      bottomNavigationBar: globals.bottomBar,
+      bottomNavigationBar: BottomBar(active: 0),
     );
   }
 }

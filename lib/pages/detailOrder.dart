@@ -6,6 +6,7 @@ import 'package:ponygold_courier/globals.dart' as globals;
 import 'package:ponygold_courier/pages/components/aboutOrder.dart';
 import 'package:ponygold_courier/pages/components/detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ponygold_courier/widgets.dart';
 
 class DetailOrder extends StatefulWidget {
   DetailOrder({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _DetailOrderState extends State<DetailOrder> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = jsonDecode(prefs.getString('user').toString());
     final response = await globals.get('/api/courier/order/$id');
-    print(int.parse(response['courier_id']) == user['id']);
+    print(user);
     setState(() {
       if (int.parse(response['courier_id']) == user['id']) {
         currentOrder = false;
@@ -64,6 +65,41 @@ class _DetailOrderState extends State<DetailOrder> {
   closeOrder() async {
     globals.post('/api/courier/close-order/$id', {}, false);
     Get.offAllNamed('/history-orders');
+  }
+
+  show(context) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(''),
+        titlePadding: EdgeInsets.all(0),
+        content: const Text(
+          'Вы действительно хотите отказаться от доставки данного заказа?',
+          style: TextStyle(
+              color: Color(0xFF313131),
+              fontWeight: FontWeight.w500,
+              fontSize: 18),
+          textAlign: TextAlign.center,
+        ),
+        contentPadding: EdgeInsets.all(0),
+        actions: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('ОТМЕНИТЬ'),
+              ),
+              TextButton(
+                onPressed: () => cancelOrder(),
+                child: const Text('ПОДТВЕРДИТЬ'),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -141,7 +177,7 @@ class _DetailOrderState extends State<DetailOrder> {
                                 : Colors.transparent,
                             elevation: currentOrder ? 1 : 0),
                         onPressed: () {
-                          cancelOrder();
+                          currentOrder ? cancelOrder() : show(context);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -206,107 +242,7 @@ class _DetailOrderState extends State<DetailOrder> {
                 )
               : Container()
           : Container(),
-      bottomNavigationBar: globals.bottomBar,
+      bottomNavigationBar: BottomBar(),
     );
   }
 }
-
-// Column(
-//                           children: [
-//                             Padding(padding: EdgeInsets.only(top: 10)),
-//                             Container(
-//                               margin: EdgeInsets.only(bottom: 5),
-//                               child: Text(
-//                                 'Заказ№${order['id']}',
-//                                 style: TextStyle(
-//                                     fontSize: 16,
-//                                     fontWeight: FontWeight.bold,
-//                                     color: globals.grey),
-//                               ),
-//                             ),
-//                             Container(
-//                               margin: EdgeInsets.only(bottom: 10),
-//                               child: Text(
-//                                 globals.formatDate(order['created_at']),
-//                                 style: TextStyle(color: Color(0xFF747474)),
-//                               ),
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(bottom: 15),
-//                               child: Row(
-//                                 mainAxisAlignment: MainAxisAlignment.center,
-//                                 children: [
-//                                   Text(
-//                                     'Отгрузить: ',
-//                                     style: TextStyle(
-//                                         fontSize: 16,
-//                                         fontWeight: FontWeight.bold),
-//                                   ),
-//                                   Text(
-//                                     'Еvos, Юнусабад Сараф Ц-1',
-//                                     style: TextStyle(
-//                                       fontSize: 16,
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                             ),
-//                             Row(
-//                               mainAxisAlignment: MainAxisAlignment.center,
-//                               crossAxisAlignment: CrossAxisAlignment.center,
-//                               children: [
-//                                 Text(
-//                                   'Доставить в: ',
-//                                   style: TextStyle(
-//                                       fontSize: 16,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                                 Flexible(
-//                                   child: Text(
-//                                     'Ташкент, массив Кушбеги, д 14, кв 14, напротив магазина Азия',
-//                                     style: TextStyle(
-//                                       fontSize: 16,
-//                                     ),
-//                                     textAlign: TextAlign.center,
-//                                   ),
-//                                 )
-//                               ],
-//                             ),
-//                             Container(
-//                               margin: EdgeInsets.only(bottom: 13),
-//                               child: Text(
-//                                 order['courier_id'] != '0'
-//                                     ? globals
-//                                         .formatPhone(order['courier']['phone'])
-//                                     : '',
-//                                 style: TextStyle(
-//                                     color: Color(0xFF747474),
-//                                     fontWeight: FontWeight.bold),
-//                               ),
-//                             ),
-//                             Container(
-//                                 child: Row(
-//                               mainAxisAlignment: MainAxisAlignment.center,
-//                               children: [
-//                                 Padding(
-//                                   padding: EdgeInsets.only(right: 5),
-//                                   child: Image.asset('images/car.png'),
-//                                 ),
-//                                 Text(
-//                                   'Курьеру: ',
-//                                   style: TextStyle(
-//                                       fontSize: 16,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                                 Text(
-//                                   globals.formatMoney(totalAmount.toString()) +
-//                                       ' сум',
-//                                   style: TextStyle(
-//                                       fontSize: 16,
-//                                       fontWeight: FontWeight.bold,
-//                                       color: globals.green),
-//                                 ),
-//                               ],
-//                             )),
-//                           ],
-//                         )

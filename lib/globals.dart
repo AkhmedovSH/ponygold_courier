@@ -192,51 +192,51 @@ showSuccessToast(text) {
 int active = 0;
 
 onItemTab(int index) {
-  // if (index != active) {
-  active = index;
-  switch (index) {
-    case 0:
-      Get.offAllNamed("/");
-      break;
-    case 1:
-      Get.offAllNamed(
-        "/current-orders",
-      );
-      break;
-    case 2:
-      Get.offAllNamed("/history-orders");
-      break;
-    case 3:
-      Get.offAllNamed(
-        "/profile",
-      );
-      break;
+  if (index != active) {
+    active = index;
+    switch (index) {
+      case 0:
+        Get.offAllNamed("/");
+        break;
+      case 1:
+        Get.offAllNamed(
+          "/current-orders",
+        );
+        break;
+      case 2:
+        Get.offAllNamed("/history-orders");
+        break;
+      case 3:
+        Get.offAllNamed(
+          "/profile",
+        );
+        break;
+    }
+    bottomBar = BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: onItemTab,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory, color: active == 0 ? blue : grey3),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt, color: active == 1 ? blue : grey3),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.pending_actions,
+                  color: active == 2 ? blue : grey3),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: active == 3 ? blue : grey3,
+              ),
+              label: ''),
+        ]);
   }
-  bottomBar = BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      onTap: onItemTab,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.inventory, color: active == 0 ? blue : grey3),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt, color: active == 1 ? blue : grey3),
-            label: ''),
-        BottomNavigationBarItem(
-            icon:
-                Icon(Icons.pending_actions, color: active == 2 ? blue : grey3),
-            label: ''),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: active == 3 ? blue : grey3,
-            ),
-            label: ''),
-      ]);
-  // }
 }
 
 Widget bottomBar = BottomNavigationBar(

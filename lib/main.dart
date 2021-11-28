@@ -36,8 +36,8 @@ void main() async {
     theme: ThemeData(primaryColor: Color(0xFF5986E2), fontFamily: 'ProDisplay'),
     initialRoute: initialRoute,
     getPages: [
-      GetPage(name: '/', page: () => Index()),
       GetPage(name: '/login', page: () => Login()),
+      GetPage(name: '/', page: () => Index()),
       GetPage(name: '/profile', page: () => Profile()),
       GetPage(name: '/detail-order', page: () => DetailOrder()),
       GetPage(name: '/current-orders', page: () => CurrentOrders()),

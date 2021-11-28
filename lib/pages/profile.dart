@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:ponygold_courier/widgets.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -60,6 +61,7 @@ class _ProfileState extends State<Profile> {
 
   getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('user');
     dynamic token = prefs.getString('access_token');
     final response = await http.get(
       Uri.parse('https://ponygold.uz/api/auth/me'),
@@ -148,7 +150,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: 15),
+                            margin: EdgeInsets.only(bottom: 15, top: 20),
                             width: double.infinity,
                             decoration: ShapeDecoration(
                               shape: RoundedRectangleBorder(
@@ -312,7 +314,7 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Container(
                                 margin: EdgeInsets.only(top: 15, bottom: 15),
-                                child: Text('Курьеру должны: ',
+                                child: Text('Курьер должнен: ',
                                     style: TextStyle(
                                         color: globals.black,
                                         fontSize: 18,
@@ -380,7 +382,9 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-        bottomNavigationBar: globals.bottomBar,
+        bottomNavigationBar: BottomBar(
+          active: 3,
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ponygold_courier">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="ponygold_courier"
         android:icon="@mipmap/ic_launcher">

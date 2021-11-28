@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ponygold_courier/globals.dart' as globals;
+import 'package:ponygold_courier/widgets.dart';
 
 class CurrentOrders extends StatefulWidget {
   CurrentOrders({Key? key}) : super(key: key);
@@ -19,6 +20,9 @@ class _CurrentOrdersState extends State<CurrentOrders> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      loading = false;
+    });
     getOrders();
   }
 
@@ -28,13 +32,8 @@ class _CurrentOrdersState extends State<CurrentOrders> {
     final response = await globals.get('/api/courier/orders');
     final arr = [];
     for (var i = 0; i < response['data'].length; i++) {
-      print((user['id']) + int.parse(response['data'][i]['courier_id']));
-      print((user['id']) == int.parse(response['data'][i]['courier_id']));
       if ((user['id']) == int.parse(response['data'][i]['courier_id'])) {
         arr.add(response['data'][i]);
-        // print(response['data'][i]['courier_id']);
-      } else {
-        // print("ERROR " + response['data'][i]['courier_id']);
       }
     }
     setState(() {
@@ -48,7 +47,7 @@ class _CurrentOrdersState extends State<CurrentOrders> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Текущий заказ'),
+        title: Text('Текущие заказы'),
       ),
       body: loading
           ? SingleChildScrollView(
@@ -141,11 +140,11 @@ class _CurrentOrdersState extends State<CurrentOrders> {
               ),
             ))
           : Center(
-              child: CircularProgressIndicator(
-                color: globals.blue,
-              ),
+              child: CircularProgressIndicator(),
             ),
-      bottomNavigationBar: globals.bottomBar,
+      bottomNavigationBar: BottomBar(
+        active: 1,
+      ),
     );
   }
 }
