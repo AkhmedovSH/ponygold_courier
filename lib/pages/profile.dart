@@ -61,7 +61,6 @@ class _ProfileState extends State<Profile> {
 
   getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('user');
     dynamic token = prefs.getString('access_token');
     final response = await http.get(
       Uri.parse('https://ponygold.uz/api/auth/me'),
@@ -84,6 +83,7 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: Text('Мой профиль'),
           centerTitle: true,
+          backgroundColor: globals.blue,
         ),
         body: loading
             ? Center(
@@ -372,7 +372,7 @@ class _ProfileState extends State<Profile> {
                                           child: Icon(
                                         Icons.arrow_forward_ios,
                                         size: 18,
-                                        color: Color(0xFF5986E2),
+                                        color: globals.blue,
                                       ))),
                                 ],
                               ))

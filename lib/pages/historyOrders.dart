@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 import 'package:ponygold_courier/globals.dart' as globals;
 import 'package:ponygold_courier/widgets.dart';
 
-class Index extends StatefulWidget {
-  Index({Key? key}) : super(key: key);
+class Historyorders extends StatefulWidget {
+  Historyorders({Key? key}) : super(key: key);
 
   @override
-  _IndexState createState() => _IndexState();
+  _HistoryordersState createState() => _HistoryordersState();
 }
 
-class _IndexState extends State<Index> {
+class _HistoryordersState extends State<Historyorders> {
   bool loading = true;
   dynamic orders = [];
 
@@ -24,7 +24,7 @@ class _IndexState extends State<Index> {
   }
 
   getOrders() async {
-    final response = await globals.get('/api/courier/orders');
+    final response = await globals.get('/api/courier/history');
     setState(() {
       orders = response['data'];
       loading = true;
@@ -35,9 +35,8 @@ class _IndexState extends State<Index> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Доступные заказы'),
         centerTitle: true,
-        elevation: 0,
+        title: Text('История заказов'),
         backgroundColor: globals.blue,
       ),
       body: loading
@@ -51,14 +50,14 @@ class _IndexState extends State<Index> {
                       for (var i = 0; i < orders.length; i++)
                         GestureDetector(
                           onTap: () {
-                            Get.toNamed("/detail-order",
+                            Get.toNamed("/history-detail-order",
                                 arguments: orders[i]['id']);
                           },
                           child: Container(
                               height: 110,
                               width: double.infinity,
                               margin: EdgeInsets.only(bottom: 15),
-                              padding: EdgeInsets.all(15),
+                              padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
@@ -134,14 +133,14 @@ class _IndexState extends State<Index> {
                   ),
                 ))
               : Center(
-                  child: Text('На данный момент нет заказов...'),
+                  child: Text('Нет текущих заказов'),
                 )
           : Center(
-              child: CircularProgressIndicator(
-                color: globals.blue,
-              ),
+              child: CircularProgressIndicator(),
             ),
-      bottomNavigationBar: BottomBar(active: 0),
+      bottomNavigationBar: BottomBar(
+        active: 2,
+      ),
     );
   }
 }

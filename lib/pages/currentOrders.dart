@@ -27,17 +27,9 @@ class _CurrentOrdersState extends State<CurrentOrders> {
   }
 
   getOrders() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final user = json.decode(prefs.getString('user').toString());
-    final response = await globals.get('/api/courier/orders');
-    final arr = [];
-    for (var i = 0; i < response['data'].length; i++) {
-      if ((user['id']) == int.parse(response['data'][i]['courier_id'])) {
-        arr.add(response['data'][i]);
-      }
-    }
+    final response = await globals.get('/api/courier/own-orders');
     setState(() {
-      orders = arr;
+      orders = response;
       loading = true;
     });
   }
@@ -48,97 +40,104 @@ class _CurrentOrdersState extends State<CurrentOrders> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Текущие заказы'),
+        backgroundColor: globals.blue,
       ),
       body: loading
-          ? SingleChildScrollView(
-              child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  Padding(padding: EdgeInsets.only(top: 15)),
-                  for (var i = 0; i < orders.length; i++)
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed("/detail-order",
-                            arguments: orders[i]['id']);
-                      },
-                      child: Container(
-                          height: 110,
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: 15),
-                          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5.0)),
-                              border: Border.all(color: Color(0xFFECECEC))),
-                          child: Stack(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+          ? orders.length > 0
+              ? SingleChildScrollView(
+                  child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Padding(padding: EdgeInsets.only(top: 15)),
+                      for (var i = 0; i < orders.length; i++)
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed("/detail-order",
+                                arguments: orders[i]['id']);
+                          },
+                          child: Container(
+                              height: 110,
+                              width: double.infinity,
+                              margin: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                  border: Border.all(color: Color(0xFFECECEC))),
+                              child: Stack(
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      'Заказ №${orders[i]['id']}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      globals
-                                          .formatDate(orders[i]['created_at']),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xFF747474)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Positioned(
-                                  right: 8,
-                                  child: Container(
-                                      child: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
-                                    color: Color(0xFF5986E2),
-                                  ))),
-                              Positioned(
-                                  // left: 6,
-                                  bottom: 4,
-                                  child: Container(
-                                      child: Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 5),
-                                        child: Image.asset('images/car.png'),
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          'Заказ №${orders[i]['id']}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
                                       ),
-                                      Text(
-                                        'Курьеру: ',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        globals.formatMoney(orders[i]
-                                                    ['total_amount']
-                                                .toString()) +
-                                            ' сум',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: globals.green),
+                                      Container(
+                                        child: Text(
+                                          globals.formatDate(
+                                              orders[i]['created_at']),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFF747474)),
+                                        ),
                                       ),
                                     ],
-                                  ))),
-                            ],
-                          )),
-                    )
-                ],
-              ),
-            ))
+                                  ),
+                                  Positioned(
+                                      right: 8,
+                                      child: Container(
+                                          child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 18,
+                                        color: globals.blue,
+                                      ))),
+                                  Positioned(
+                                      // left: 6,
+                                      bottom: 4,
+                                      child: Container(
+                                          child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 5),
+                                            child:
+                                                Image.asset('images/car.png'),
+                                          ),
+                                          Text(
+                                            'Курьеру: ',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            globals.formatMoney(orders[i]
+                                                        ['total_amount']
+                                                    .toString()) +
+                                                ' сум',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: globals.green),
+                                          ),
+                                        ],
+                                      ))),
+                                ],
+                              )),
+                        )
+                    ],
+                  ),
+                ))
+              : Center(
+                  child: Text('Нет текущих заказов'),
+                )
           : Center(
               child: CircularProgressIndicator(),
             ),

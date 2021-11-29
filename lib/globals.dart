@@ -16,7 +16,7 @@ int id = 1;
 
 Color white = Color(0xFFFFFFFF);
 Color black = Color(0xFF313131);
-Color blue = Color(0xFF5986E2);
+Color blue = Color(0xFF00B4AA);
 Color lightGrey = Color(0xFF313131);
 Color light = Color(0xFFECECEC);
 Color red = Color(0xFFEB6465);
@@ -89,6 +89,8 @@ get(url) async {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     },
   );
+  print(response.statusCode);
+  print(response.body);
   if (response.statusCode == 400) {
     return jsonDecode(response.body);
   }

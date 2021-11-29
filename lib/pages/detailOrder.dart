@@ -38,6 +38,7 @@ class _DetailOrderState extends State<DetailOrder> {
     final user = jsonDecode(prefs.getString('user').toString());
     final response = await globals.get('/api/courier/order/$id');
     print(user);
+    print(response);
     setState(() {
       if (int.parse(response['courier_id']) == user['id']) {
         currentOrder = false;
@@ -108,6 +109,7 @@ class _DetailOrderState extends State<DetailOrder> {
       appBar: AppBar(
         title: Text('Доступные заказы'),
         centerTitle: true,
+        backgroundColor: globals.blue,
       ),
       body: loading
           ? SingleChildScrollView(

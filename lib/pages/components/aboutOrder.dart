@@ -45,6 +45,7 @@ class _AboutOrderState extends State<AboutOrder> {
               )),
           GestureDetector(
             onTap: () {
+              Navigator.pushNamed(context, '/google-map');
               // _getCurrentLocation();
             },
             child: Row(

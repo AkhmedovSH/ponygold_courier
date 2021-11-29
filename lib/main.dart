@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:ponygold_courier/globals.dart' as globals;
 // Pages
 
 import 'package:ponygold_courier/pages/login.dart';
@@ -9,6 +9,10 @@ import 'package:ponygold_courier/pages/index.dart';
 import 'package:ponygold_courier/pages/detailOrder.dart';
 import 'package:ponygold_courier/pages/profile.dart';
 import 'package:ponygold_courier/pages/currentOrders.dart';
+import 'package:ponygold_courier/pages/historyOrders.dart';
+import 'package:ponygold_courier/pages/historyDetailOrder.dart';
+import 'package:ponygold_courier/pages/googleMap.dart';
+
 
 void main() async {
   Locale lang = Locale('ru');
@@ -33,7 +37,7 @@ void main() async {
     locale: lang,
     defaultTransition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 250),
-    theme: ThemeData(primaryColor: Color(0xFF5986E2), fontFamily: 'ProDisplay'),
+    theme: ThemeData(primaryColor: globals.blue, fontFamily: 'ProDisplay'),
     initialRoute: initialRoute,
     getPages: [
       GetPage(name: '/login', page: () => Login()),
@@ -41,7 +45,9 @@ void main() async {
       GetPage(name: '/profile', page: () => Profile()),
       GetPage(name: '/detail-order', page: () => DetailOrder()),
       GetPage(name: '/current-orders', page: () => CurrentOrders()),
-      // GetPage(name: '/about-order', page: () => AboutOrder()),
+      GetPage(name: '/history-orders', page: () => Historyorders()),
+      GetPage(name: '/history-detail-order', page: () => HistoryDetailOrder()),
+      GetPage(name: '/google-map', page: () => MapSample()),
     ],
     // onGenerateRoute: RouteGenerator.generateRoute,
   ));
