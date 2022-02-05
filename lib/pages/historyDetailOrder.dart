@@ -37,13 +37,10 @@ class _HistoryDetailOrderState extends State<HistoryDetailOrder> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = jsonDecode(prefs.getString('user').toString());
     final response = await globals.get('/api/courier/order/$id');
-    print(user);
-    print(response);
     setState(() {
       if (int.parse(response['courier_id']) == user['id']) {
         currentOrder = false;
       }
-      print(currentOrder);
       order = response;
       totalAmount = response['delivery_price'];
       loading = true;
@@ -199,15 +196,18 @@ class _HistoryDetailOrderState extends State<HistoryDetailOrder> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            Flexible(
-                              child: Text(
-                                'Evos,Юнусабад, Ц - 1, ул. Уйгур Сафат',
-                                style: TextStyle(
-                                  fontSize: 18,
+                            for (var i = 0;
+                                i < order['order_poses'].length;
+                                i++)
+                              Flexible(
+                                child: Text(
+                                  '${order['order_poses'][i]['name']}, ${order['order_poses'][i]['brand']['name']}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
+                              )
                           ],
                         ),
                       ),
@@ -221,7 +221,7 @@ class _HistoryDetailOrderState extends State<HistoryDetailOrder> {
                           ),
                           Flexible(
                             child: Text(
-                              'Ташкент, массив Кушбеги, д 14, кв 14, напротив магазина Азия',
+                              '${order['address']}',
                               style: TextStyle(
                                 fontSize: 18,
                               ),
@@ -357,7 +357,7 @@ class _HistoryDetailOrderState extends State<HistoryDetailOrder> {
                             Container(
                               margin: EdgeInsets.only(bottom: 15),
                               child: Text(
-                                  '${globals.formatMoney(order['total_amount'])}сум.',
+                                  '${globals.formatMoney(order['delivery_price'] + order['delivery_price_extra'])}сум.',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: globals.green,

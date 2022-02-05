@@ -89,8 +89,9 @@ get(url) async {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     },
   );
+  print(baseUrl + url);
   print(response.statusCode);
-  print(response.body);
+  print(jsonDecode(response.body));
   if (response.statusCode == 400) {
     return jsonDecode(response.body);
   }

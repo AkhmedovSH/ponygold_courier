@@ -70,6 +70,7 @@ class _ProfileState extends State<Profile> {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       },
     );
+    print(response.body);
     setState(() {
       user = jsonDecode(response.body);
       loading = false;

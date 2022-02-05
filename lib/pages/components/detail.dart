@@ -48,12 +48,16 @@ class _DetailState extends State<Detail> {
                 'Отгрузить: ',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Text(
-                'Еvos, Юнусабад Сараф Ц-1',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
+              for (var i = 0; i < widget.item['order_poses'].length; i++)
+                Flexible(
+                  child: Text(
+                    '${widget.item['order_poses'][i]['name']}, ${widget.item['order_poses'][i]['brand']['name']}',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
             ],
           ),
         ),
@@ -67,7 +71,7 @@ class _DetailState extends State<Detail> {
             ),
             Flexible(
               child: Text(
-                'Ташкент, массив Кушбеги, д 14, кв 14, напротив магазина Азия',
+                '${widget.item['address']}',
                 style: TextStyle(
                   fontSize: 18,
                 ),

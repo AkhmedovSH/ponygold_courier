@@ -13,7 +13,6 @@ import 'package:ponygold_courier/pages/historyOrders.dart';
 import 'package:ponygold_courier/pages/historyDetailOrder.dart';
 import 'package:ponygold_courier/pages/googleMap.dart';
 
-
 void main() async {
   Locale lang = Locale('ru');
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +36,16 @@ void main() async {
     locale: lang,
     defaultTransition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 250),
-    theme: ThemeData(primaryColor: globals.blue, fontFamily: 'ProDisplay'),
+    theme: ThemeData(
+        backgroundColor: const Color(0xFFFFFFFF),
+        scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+        primaryColor: globals.blue,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: globals.blue,
+          ),
+        ),
+        fontFamily: 'ProDisplay'),
     initialRoute: initialRoute,
     getPages: [
       GetPage(name: '/login', page: () => Login()),
@@ -51,32 +59,4 @@ void main() async {
     ],
     // onGenerateRoute: RouteGenerator.generateRoute,
   ));
-}
-
-class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    print(settings);
-    print(settings.name);
-    switch (settings.name) {
-      case '/login':
-        return GetPageRoute(
-          settings: settings,
-          page: () => Login(),
-          routeName: 'login',
-          transition: Transition.rightToLeft,
-        );
-      case '/':
-        return GetPageRoute(
-          settings: settings,
-          page: () => Index(),
-          transition: Transition.rightToLeft,
-        );
-      default:
-        return GetPageRoute(
-          settings: settings,
-          page: () => Login(),
-          transition: Transition.rightToLeft,
-        );
-    }
-  }
 }

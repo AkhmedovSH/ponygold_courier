@@ -37,16 +37,14 @@ class _DetailOrderState extends State<DetailOrder> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = jsonDecode(prefs.getString('user').toString());
     final response = await globals.get('/api/courier/order/$id');
-    print(user);
-    print(response);
     setState(() {
       if (int.parse(response['courier_id']) == user['id']) {
         currentOrder = false;
       }
-      print(currentOrder);
       order = response;
       totalAmount = response['delivery_price'];
       loading = true;
+      print(order['order_poses']);
     });
   }
 
